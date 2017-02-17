@@ -1,1 +1,1 @@
-myworker: ./listener
+app: listener-firebase
