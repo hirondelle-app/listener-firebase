@@ -101,7 +101,8 @@ func streamTweets(s *anaconda.Stream, quit chan bool) {
 						keyword := getKeywordFromTweet(retweet)
 
 						if keyword == "" {
-							return
+							log.Warningln("Empty keyword for tweet ", retweet.IdStr)
+							break
 						}
 
 						fbTweets := firebase.Child(fmt.Sprintf("tweets/byId/%s", retweet.IdStr))
@@ -111,6 +112,7 @@ func streamTweets(s *anaconda.Stream, quit chan bool) {
 							"likes":     retweet.FavoriteCount,
 							"retweets":  retweet.RetweetCount,
 							"createdAt": retweet.CreatedAt,
+							"keyword":   keyword,
 						}
 
 						if err := fbTweets.Set(t); err != nil {
